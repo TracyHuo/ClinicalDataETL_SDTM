@@ -11,10 +11,10 @@
     * [6. DS](#6--DS)     
 * [四. SDTM结果数据集展示](#四--SDTM结果数据集展示)  
 * [五. 宏代码](#五--宏代码)  
-    * [1. 宏%getblank](#1--宏%getblank)  
-    * [2. 宏%getSEQ](#2--宏%getSEQ)   
-    * [3. 宏%DelScreenFailure](#3--宏%DelScreenFailure)  
-    * [4. 宏%AddScreenDisposition](#4--宏%AddScreenDisposition)  
+    * [1. 宏%getblank](#1--宏getblank)  
+    * [2. 宏%getSEQ](#2--宏getSEQ)   
+    * [3. 宏%DelScreenFailure](#3--宏DelScreenFailure)  
+    * [4. 宏%AddScreenDisposition](#4--宏AddScreenDisposition)  
  
     
 &ensp;&ensp;&ensp;&ensp;  
@@ -753,7 +753,7 @@ RUN;
 &ensp;&ensp;&ensp;&ensp;  
 &ensp;&ensp;&ensp;&ensp;本次试验使用的宏代码展示如下：  
 &ensp;&ensp;&ensp;&ensp;  
-## 1  宏%getblank  
+## 1  宏getblank  
 &ensp;&ensp;&ensp;&ensp;  
 * **代码**：   
 &ensp;&ensp;&ensp;&ensp;getblank.sas  
@@ -799,7 +799,7 @@ OPTIONS MSTORED SASMSTORE=GINMACRO;
 
 ```   
 &ensp;&ensp;&ensp;&ensp;  
-## 2  宏%getSEQ  
+## 2  宏getSEQ  
 &ensp;&ensp;&ensp;&ensp;  
 * **代码**：   
 &ensp;&ensp;&ensp;&ensp;getSEQ.sas  
@@ -837,7 +837,7 @@ OPTIONS MSTORED SASMSTORE=GINMACRO;
 
 ```   
 &ensp;&ensp;&ensp;&ensp;  
-## 3  宏%DelScreenFailure  
+## 3  宏DelScreenFailure  
 &ensp;&ensp;&ensp;&ensp;  
 * **代码**：   
 &ensp;&ensp;&ensp;&ensp;DelScreenFailure.sas  
@@ -868,7 +868,7 @@ OPTIONS MSTORED SASMSTORE=GINMACRO;
 
 ```   
 &ensp;&ensp;&ensp;&ensp;  
-## 4  宏%AddScreenDisposition  
+## 4  宏AddScreenDisposition  
 &ensp;&ensp;&ensp;&ensp;  
 * **代码**：   
 &ensp;&ensp;&ensp;&ensp;AddScreenDisposition.sas  
