@@ -722,4 +722,208 @@ DATA GINSDTM.DS ;
 RUN;
 
 ```  
+&ensp;&ensp;&ensp;&ensp;    
 
+# 四  SDTM结果数据集展示  
+&ensp;&ensp;&ensp;&ensp;  
+&ensp;&ensp;&ensp;&ensp;  以上代码共得到DM, SUPPDM, EX, EF, DS 五个SAS数据集。结果展示如下：  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;DM   
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;SUPPDM  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;EX  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;EF  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;DS  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;   
+
+# 五  宏代码  
+&ensp;&ensp;&ensp;&ensp;  
+&ensp;&ensp;&ensp;&ensp;本次试验使用的宏代码展示如下：  
+&ensp;&ensp;&ensp;&ensp;  
+## 1  宏%getblank  
+&ensp;&ensp;&ensp;&ensp;  
+* **代码**：   
+&ensp;&ensp;&ensp;&ensp;getblank.sas  
+```  
+/********************************************************************************
+ 此宏的目的是参考某域的map表，生成此域在最终SDTM表里需要包含的变量（名称、标签、类型、
+ 长度），且顺序是此map表里变量的顺序，用于和之后得到的此域的各种分表merge到一起，
+ 得到此域的SDTM表，并让表里的变量合乎map里指定的规则。
+*********************************************************************************/
+
+
+OPTIONS MSTORED SASMSTORE=GINMACRO;
+%MACRO getblank(maptable= , dsout= ) / STORE SOURCE;  
+    /*maptable是某域的map表，即SAS数据集。dsout是你想得到的空表数据集名字，可带库名。*/
+
+    /*_n_是 set的循环次数，是数值。通过set循环，为map表里Variable_Name列里的每个变量
+      都生成相应的宏变量 Variable_Name_n，其标签、类型、长度也分别是宏变量Variable_Label_n, 
+      Type_n, Length_n
+    */
+    DATA  _null_;
+	    SET &maptable. nobs=n ; /*nobs用于获取maptable的条目数，即其对多少变量制定规则*/
+		CALL SYMPUTX('TOTAL',n);
+		CALL SYMPUTX("Variable_Name_"||left(put(_n_, best.)),Variable_Name);
+		CALL SYMPUTX("Variable_Label_"||left(put(_n_, best.)),Variable_Label);
+		CALL SYMPUTX("Length_"||left(put(_n_,best.)),Length);
+	RUN;
+
+    DATA &dsout. ;  
+	    %DO i=1 %TO &TOTAL. ;
+		    ATTRIB &&Variable_Name_&i  LABEL="&&Variable_Label_&i" LENGTH=&&Length_&i. ;
+            /*attrib语句，设定一个或更多变量的输入输出格式，标签，长度。*/
+			/*注意这个LENGTH。map表里，字符型变量的length用$w 表示，而数值型型变量的length用w 表示，
+		      读到宏变量Length_i 里，都成了字符串。但最后生成的空表里各变量的类型是对的，
+		      为什么？因为此处的attrib语句，设置LENGTH的时候，是解析的宏语句，所以解析得到
+			  LENGTH=$20.这样的，得到字符型变量，解析得到LENGTH=8.这样的，得到数值型变量。
+			  所以上边无需提取map表里的Type变量，只需提取Length即可*/
+        %END;
+		DELETE; /*如果没有delete; 则得到的表会有一行空行。*/
+	RUN;
+	
+
+%MEND getblank;
+
+```   
+&ensp;&ensp;&ensp;&ensp;  
+## 2  宏%getSEQ  
+&ensp;&ensp;&ensp;&ensp;  
+* **代码**：   
+&ensp;&ensp;&ensp;&ensp;getSEQ.sas  
+```  
+/********************************************************************************
+ 此宏的目的是为某个数据集生成--SEQ变量。
+ 宏参数：dsin是输入数据集，dsout是包含了比原来多一列--SEQ的数据集（带库名）。domain
+ 是域的2字符代号。keys是此域的自然基里你需要用于排序的部分，用空格隔开即可。
+ 注意，--SEQ变量一般是为了在一个数据集里，让同一个受试者的records能够拥有唯一的代号。
+ 但同一个受试者的records的顺序应如何？因--SEQ常作为自然基的替代，所以--SEQ需保证其对
+ 同一受试者records的排序和自然基排出的顺序一致。
+*********************************************************************************/
+
+
+OPTIONS MSTORED SASMSTORE=GINMACRO;
+%MACRO getSEQ(dsin=, dsout=, domain=, keys=) / STORE SOURCE;
+
+    /*先按照你提供的自然基对dsin数据集进行排序*/
+    PROC SORT data=&dsin out=seq_temp ;
+	    BY &keys;
+	RUN;
+
+	/*为排序后的数据集添加--SEQ变量并赋值，然后保存在seq_temp数据集里。
+	  一定注意，getSEQ函数返回的是一个数据集*/
+	DATA &dsout ;
+	    SET seq_temp;
+		BY &keys; /*此BY用于提供first.XX变量*/
+		domain = "%upcase(&domain)";
+		IF first.USUBJID THEN DO;
+		    &domain.SEQ = 0 ;
+		END;
+		&domain.SEQ + 1;
+    RUN;
+%MEND getSEQ;
+
+```   
+&ensp;&ensp;&ensp;&ensp;  
+## 3  宏%DelScreenFailure  
+&ensp;&ensp;&ensp;&ensp;  
+* **代码**：   
+&ensp;&ensp;&ensp;&ensp;DelScreenFailure.sas  
+```  
+/********************************************************************************
+ 此宏的目的是为专门为EF_ALL数据集删去screen failure的受试者的records的。
+ 其中GINSDTM.EF即生成的SDTM EF数据集，内不含screen failure受试者
+*********************************************************************************/
+
+
+OPTIONS MSTORED SASMSTORE=GINMACRO;
+%MACRO DelScreenFailure / STORE SOURCE;
+    PROC SQL noprint;
+	    SELECT DISTINCT SUBJID into:SCRFID separated by ","
+		FROM work.EF_ALL
+		WHERE EFREASND="SCREEN FAILURE"
+        ;
+		/*此SQL使用宏变量SCRFID收集screen failure的受试者的SUBJID*/
+	QUIT;
+	%PUT &SCRFID; /*日志中显示： 31,32 */
+
+    DATA GINSDTM.EF;
+	    SET work.EF_ALL;
+		IF SUBJID IN (&SCRFID) THEN DELETE;
+	RUN;
+
+%MEND DelScreenFailure ;
+
+```   
+&ensp;&ensp;&ensp;&ensp;  
+## 4  宏%AddScreenDisposition  
+&ensp;&ensp;&ensp;&ensp;  
+* **代码**：   
+&ensp;&ensp;&ensp;&ensp;AddScreenDisposition.sas  
+```    
+/********************************************************************************
+ 此宏的目的是为专门为DS_term数据集里完成screening epoch的受试者增添一行记录“完成
+ screening epoch”的record的。
+*********************************************************************************/
+
+
+OPTIONS MSTORED SASMSTORE=GINMACRO;
+%MACRO AddScreenDisposition / STORE SOURCE;
+    %LOCAL i;
+
+    PROC SQL noprint;
+	    SELECT DISTINCT SUBJID into:CSCRID separated by " "
+		FROM work.DS_term
+		WHERE Disposition="RANDOMIZED" AND DSTERM="RANDOMIZED"
+        ;
+		/*此SELECT过程用于选出完成了screen epoch的所有受试者，将其SUBJID
+		  存储于CSCRID宏变量，之间由逗号隔开。*/
+		SELECT COUNT(DISTINCT SUBJID) into:CSCRID_count
+		FROM work.DS_term
+		WHERE Disposition="RANDOMIZED" AND DSTERM="RANDOMIZED"
+        ;
+		/*此SELECT过程得到完成screen epoch的受试者数目，存于
+		  CSCRID_count宏变量*/
+	QUIT;
+	%PUT &CSCRID; /*从1号到30号都完成了screen epoch，只有31和32号因
+	                screen failure未进行randomization，从而位完成
+	                screen epoch。*/
+	%PUT &CSCRID_count; /*从1号到30号共30个*/
+
+	%DO i=1 %TO &CSCRID_count ;
+	    %LET SID =%scan(&CSCRID,&i) ;
+		/*注意，这里有一个问题，如果宏变量CSCRID不是空格分隔而是逗号分隔，
+		  则直接这样调用会出现“宏函数 %SCAN 的参数过多”的ERROR提示，这是
+		  因为解析宏变量CSCRID后，程序将逗号理解为给%scan函数提供的参数的
+		  逗号，当然参数太多，此时可以使用%bquote函数。参：
+		  http://www.epiman.cn/thread-36646-1-1.html */
+		%PUT ****&SID**** ;
+		/*下为为表DS_term里相应的受试者插入record*/
+		PROC SQL;
+		    INSERT INTO DS_term 
+			SET SUBJID="&SID",
+			    DSTERM="COMPLETED",
+				DSDECOD="COMPLETED",
+				DSCAT="DISPOSITION EVENT",
+				DSSCAT="STUDY PARTICIPATION",
+				EPOCH="SCREENING",
+				DSSEQ=3;
+				
+		QUIT;	    
+	%END;
+
+%MEND AddScreenDisposition;
+
+```   
