@@ -23,3 +23,31 @@
 &ensp;&ensp;&ensp;&ensp;  
 &ensp;&ensp;&ensp;&ensp;示意图如下：  
 &ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;   
+&ensp;&ensp;&ensp;&ensp;    
+
+# 二  Excel原始数据与SDTM-spec  
+&ensp;&ensp;&ensp;&ensp;  
+&ensp;&ensp;&ensp;&ensp;本次试验收集了demographics, exposure, disposition, efficacy相关的Excel格式数据，分别是如下的 DM_raw.xlsx, EX_raw.xlsx, DS_raw.xlsx, EF_raw.xlsx，还有随机表RAND.xlsx。展示如下：  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;DM_raw.xlsx：  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;EX_raw.xlsx：  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;EF_raw.xlsx：  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;RAND.xlsx：  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;     
+&ensp;&ensp;&ensp;&ensp;示意图如下：  
+&ensp;&ensp;&ensp;&ensp; 
+  
+&ensp;&ensp;&ensp;&ensp;   
