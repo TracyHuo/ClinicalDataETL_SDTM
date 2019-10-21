@@ -19,9 +19,9 @@
     
 &ensp;&ensp;&ensp;&ensp;  
 # 一  试验设计  
-&ensp;&ensp;&ensp;&ensp;本临床试验对比研究三种牙膏配方缓解牙龈炎的效果。三组、随机、平行，受试者在家早晚各刷牙一次，测试基线、2周、4周的MBI（平均出血指数）、MGI（平均牙龈指数）、MPI（平均菌斑指数）值。基线当天，受试者先签署知情同意书，测试MBI指标，MBI>1.5的受试者纳入试验，接着检测MGI和MPI。之后，所有被纳入的受试者随机分入三组（Sample A/Sample B/Sample C），受试者从第二天开始早晚使用相应牙膏刷牙，定时返回试验中心检查指标。  
+&ensp;&ensp;&ensp;&ensp;本临床试验对比研究三种牙膏配方缓解牙龈炎的效果。三组、随机、平行，受试者在家连续使用样品，早晚各刷牙一次，测试基线、2周、4周的MBI（平均出血指数）、MGI（平均牙龈指数）、MPI（平均菌斑指数）值。基线当天，受试者先签署知情同意书，测试MBI指标，MBI>1.5的受试者纳入试验，接着检测MGI和MPI。之后，所有被纳入的受试者随机分入三组（Sample A/Sample B/Sample C），受试者从第二天开始早晚使用相应牙膏刷牙，定时返回试验中心检查指标。  
 &ensp;&ensp;&ensp;&ensp;  
-&ensp;&ensp;&ensp;&ensp;示意图如下：  
+&ensp;&ensp;&ensp;&ensp;试验设计示意图如下：  
 &ensp;&ensp;&ensp;&ensp; 
 ![image](https://github.com/TracyHuo/ClinicalDataETL_SDTM/blob/master/Images/TrialDesign.PNG)   
 &ensp;&ensp;&ensp;&ensp;   
@@ -97,7 +97,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\DM_raw.xlsx"
             REPLACE;
             RANGE = "DM_raw$A1:E33"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINMap\DM_map.xlsx"  
             OUT = GINMAP.DM_map
@@ -105,7 +105,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\DM_map.xlsx"
             REPLACE;
             RANGE = "DM_map$A1:L20"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\EX_raw.xlsx"  
             OUT = GINRAW.EX_raw
@@ -113,7 +113,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\EX_raw.xlsx"
             REPLACE;
             RANGE = "EX_raw$A1:D31"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINMap\EX_map.xlsx"  
             OUT = GINMAP.EX_map
@@ -121,7 +121,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\EX_map.xlsx"
             REPLACE;
             RANGE = "EX_map$A1:L15"; 
             GETNAMES = YES ;
-    RUN; 
+RUN; 
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\RAND.xlsx"  
             OUT = GINRAW.RAND
@@ -129,7 +129,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\RAND.xlsx"
             REPLACE;
             RANGE = "RAND$A1:D31"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\EF_raw.xlsx"  
             OUT = GINRAW.EF_raw
@@ -137,7 +137,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\EF_raw.xlsx"
             REPLACE;
             RANGE = "EF_raw$A1:M33"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINMap\EF_map.xlsx"  
             OUT = GINMAP.EF_map
@@ -145,7 +145,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\EF_map.xlsx"
             REPLACE;
             RANGE = "EF_map$A1:L19"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\DS_raw.xlsx"  
             OUT = GINRAW.DS_raw
@@ -153,7 +153,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINRaw\DS_raw.xlsx"
             REPLACE;
             RANGE = "DS_raw$A1:E33"; 
             GETNAMES = YES ;
-    RUN; 
+RUN; 
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINMap\DS_map.xlsx"  
             OUT = GINMAP.DS_map
@@ -161,7 +161,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\DS_map.xlsx"
             REPLACE;
             RANGE = "DS_map$A1:L13"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 PROC IMPORT DATAFILE = "F:\Gingi\GINMap\SUPPDM_map.xlsx"  
             OUT = GINMAP.SUPPDM_map
@@ -169,7 +169,7 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\SUPPDM_map.xlsx"
             REPLACE;
             RANGE = "SUPPDM_map$A1:L11"; 
             GETNAMES = YES ;
-    RUN;
+RUN;
 
 ```
 &ensp;&ensp;&ensp;&ensp;   
@@ -183,11 +183,11 @@ PROC IMPORT DATAFILE = "F:\Gingi\GINMap\SUPPDM_map.xlsx"
  ***********************************************************/
 
 
-/*调用宏%getblank生成 空白数据集 GINMAP.DM_blank 。*/
+/*1. 调用宏%getblank生成 空白数据集 GINMAP.DM_blank 。*/
 OPTIONS MSTORED SASMSTORE=GINMacro ;
 %getblank(maptable=GINMAP.DM_map , dsout=GINMAP.DM_blank);
 
-/*此DATA步修改原始数据集DM_raw里的基本变量，返回DM_basic数据集。*/
+/*2. 此DATA步修改原始数据集DM_raw里的基本变量，返回DM_basic数据集。*/
 DATA DM_basic;
     SET GINRaw.DM_raw ;
 	STUDYID = "1001";
@@ -201,7 +201,7 @@ DATA DM_basic;
     KEEP STUDYID DOMAIN USUBJID SUBJID SITEID AGE AGEU COUNTRY SEX RACE BRTHDAT;
 RUN;
 
-/*此步为DM域生成ARM相关变量，返回DM_arm数据集*/
+/*3. 此步为DM域生成ARM相关变量，返回DM_arm数据集*/
 DATA DM_arm;
     MERGE GINRaw.DM_raw(in=a) GINRaw.RAND(in=b) ;
 	BY SUBJID;
@@ -214,7 +214,7 @@ DATA DM_arm;
 	/*注意，如果受试者是screen failure，则ARM, ARMCD变量都为Null，ARMNRS解释原因*/
 RUN;
 
-/*此DATA步修改原始数据集DM_raw里的日期时间变量，返回DM_date数据集。*/
+/*4. 此DATA步修改原始数据集DM_raw里的日期时间变量，返回DM_date数据集。*/
 DATA DM_date ;
     MERGE GINRaw.DM_raw(in=a)  GINRaw.EX_raw(in=b);
 	BY SUBJID; /*因为本实验中SUBJID已经是唯一的了，所以可以作为合并依赖变量。*/
@@ -240,9 +240,7 @@ DATA DM_date ;
     KEEP SUBJID RFSTDAT RFENDAT RFICDAT RFPENDAT DMDY ;
 RUN;
 
-/*此DATA步用于将前边的所有数据集（包括空表）merge到一起，
-  然后将--DAT变量赋给ISO 8601格式的--DTC变量，得到最终的SDTM 
-  DM表。*/
+/*5. 此DATA步用于将前边的所有数据集（包括空表）merge到一起，然后将--DAT变量赋给ISO 8601格式的--DTC变量，得到最终的SDTM DM表。*/
 DATA GINSDTM.DM ;
     MERGE GINMAP.DM_blank DM_basic DM_arm DM_date ;
 	BY SUBJID;
@@ -269,12 +267,11 @@ RUN;
  ***********************************************************/
 
 
-/*调用宏%getblank生成 空白数据集 GINMAP.SUPPDM_blank 。*/
+/*1. 调用宏%getblank生成 空白数据集 GINMAP.SUPPDM_blank 。*/
 OPTIONS MSTORED SASMSTORE=GINMacro ;
 %getblank(maptable=GINMAP.SUPPDM_map , dsout=GINMAP.SUPPDM_blank);
 
-/*此DATA步以原始数据集DM_raw为基础，创建SUPPDM数据集，它包含了SUPPDM
-  域里应包含的基本信息。*/
+/*2. 此DATA步以原始数据集DM_raw为基础，创建SUPPDM数据集，它包含了SUPPDM 域里应包含的基本信息。*/
 DATA SUPPDM ;
     SET GINRAW.DM_raw;
 	IF RACE^="汉族";
@@ -289,7 +286,7 @@ DATA SUPPDM ;
 	DROP SITEID RFICDAT BRTHDAT SEX SUBJID;
 RUN;
 
-/*将上述数据集与空表merge，得到最终SUPPDM数据集*/
+/*3. 将上述数据集与空表merge，得到最终SUPPDM数据集*/
 DATA GINSDTM.SUPPDM ;
     MERGE GINMAP.SUPPDM_blank SUPPDM ;
 	BY USUBJID;
@@ -308,11 +305,11 @@ RUN;
  ***********************************************************/
 
 
-/*调用宏%getblank生成 空白数据集 GINMAP.EX_blank 。*/
+/*1. 调用宏%getblank生成 空白数据集 GINMAP.EX_blank 。*/
 OPTIONS MSTORED SASMSTORE=GINMacro ;
 %getblank(maptable=GINMAP.EX_map , dsout=GINMAP.EX_blank);
 
-/*此DATA步修改原始数据集EX_raw里的基本变量，返回EX_basic数据集。*/
+/*2. 此DATA步修改原始数据集EX_raw里的基本变量，返回EX_basic数据集。*/
 DATA EX_basic;
     SET GINRaw.EX_raw ;
 	STUDYID = "1001";
@@ -327,7 +324,7 @@ DATA EX_basic;
 	DROP SITEID ;
 RUN;
 
-/*此DATA步修改原始数据集EX_raw里的日期时间变量，返回EX_date数据集。*/
+/*3. 此DATA步修改原始数据集EX_raw里的日期时间变量，返回EX_date数据集。*/
 DATA EX_date ;
     MERGE GINSDTM.DM(keep=SUBJID USUBJID RFSTDTC in=a)  GINRaw.EX_raw(in=b);
 	BY SUBJID; /*因为本实验中SUBJID已经是唯一的了，所以可以作为合并依赖变量。*/
@@ -356,11 +353,10 @@ DATA EX_date ;
     DROP RFSTDTC EXSTDAT EXENDAT ;
 RUN;
 
-/*添加EXSEQ变量。*/
+/*4. 添加EXSEQ变量。*/
 %getSEQ(dsin=EX_date, dsout=EX_seq,domain=EX, keys=USUBJID EXTRT EXSTDTC);
 
-/*此DATA步用于将前边的所有数据集（包括空表）merge到一起，
-  得到最终的SDTM EX表。*/
+/*5. 此DATA步用于将前边的所有数据集（包括空表）merge到一起，得到最终的SDTM EX表。*/
 DATA GINSDTM.EX ;
     MERGE GINMAP.EX_blank EX_basic EX_date EX_seq ;
 	BY SUBJID;
@@ -374,19 +370,18 @@ RUN;
 * **代码**：   
 &ensp;&ensp;&ensp;&ensp;GetEF.sas  
 ```  
-/***********************************************************
+/******************************************************************************
  下方代码用于生成SDTM里的EF数据集。
- EF域是我自定义的类似finding domains的域，用于存储每次visit的
- MBI,MPI,MGI测试结果。
- ***********************************************************/
+ EF域是我自定义的类似finding domains的域，用于存储每次visit的MBI,MPI,MGI测试结果。
+ ******************************************************************************/
 
 
-/*调用宏%getblank生成 空白数据集 GINMAP.EF_blank 。*/
+/*1. 调用宏%getblank生成 空白数据集 GINMAP.EF_blank 。*/
 OPTIONS MSTORED SASMSTORE=GINMacro ;
 %getblank(maptable=GINMAP.EF_map , dsout=GINMAP.EF_blank);
 
-/*此DATA步将原始数据集EF_raw的横向格式转变为纵向格式，返回EF_V数据集。*/
-/*先处理visit 1的数据*/
+/*2. 此DATA步将原始数据集EF_raw的横向格式转变为纵向格式，返回EF_V数据集。*/
+    /*先处理visit 1的数据*/
 PROC TRANSPOSE data=GINRaw.EF_raw(keep=SUBJID EFDAT_Base MBI_Base MGI_Base MPI_Base 
                                     rename=(EFDAT_Base=EFDAT MBI_Base=MBI MGI_Base=MGI 
                                             MPI_Base=MPI))
@@ -395,13 +390,13 @@ BY SUBJID EFDAT;
 VAR MBI MGI MPI;
 RUN;
 
-/*增加变量VISIT，值为"VISIT 1"*/
+    /*增加变量VISIT，值为"VISIT 1"*/
 DATA EF_visit1;
     SET EF_visit1;
 	VISIT = "VISIT 1";
 RUN;
 
-/*同样方式处理visit 2，visit 3的数据*/
+    /*同样方式处理visit 2，visit 3的数据*/
 PROC TRANSPOSE data=GINRaw.EF_raw(keep=SUBJID EFDAT_2W MBI_2W MGI_2W MPI_2W 
                                     rename=(EFDAT_2W=EFDAT MBI_2W=MBI MGI_2W=MGI MPI_2W=MPI))
 				 out=EF_visit2(drop=_label_ rename=(_name_=EFTESTCD COL1=EFORRES_num));
@@ -426,14 +421,13 @@ DATA EF_visit3;
 	VISIT = "VISIT 3";
 RUN;
 
-/*将EF_visit1，EF_visit2，EF_visit3上下合并，并按自然基排序，
-  得到EF_V*/
+    /*将EF_visit1，EF_visit2，EF_visit3上下合并，并按自然基排序，得到EF_V*/
 DATA EF_V ;
     SET EF_visit1 EF_visit2 EF_visit3;
     BY SUBJID VISIT EFTESTCD;
 RUN;
 
-/*此DATA步修改原始纵向数据集EF_V里的基本变量，返回EF_basic数据集。*/
+/*3. 此DATA步修改原始纵向数据集EF_V里的基本变量，返回EF_basic数据集。*/
 DATA EF_basic;
     SET EF_V ;
 	STUDYID = "1001";
@@ -473,7 +467,7 @@ DATA EF_basic;
 RUN;
 
 
-/*此步DATA创建EFSTAT，EFREASND变量，返回EF_stat*/
+/*4. 此步DATA创建EFSTAT，EFREASND变量，返回EF_stat*/
 DATA EF_stat;
     SET EF_basic ;
 	LENGTH EFSTAT $20;
@@ -496,7 +490,7 @@ DATA EF_stat;
     DROP n;
 RUN;
 
-/*以下DATA步获得日期变量*/
+/*5. 以下DATA步获得日期变量*/
 DATA EF_date ;
 
 	MERGE GINSDTM.DM(keep=SUBJID RFSTDTC in=a)  
@@ -518,10 +512,10 @@ DATA EF_date ;
 	DROP EFDAT ;
 RUN;
 
-/*添加EXSEQ变量。*/
+/*6. 添加EXSEQ变量。*/
 %getSEQ(dsin=EF_date, dsout=EF_seq,domain=EF, keys=USUBJID VISITNUM EFTESTCD);
 
-/*将空表与上方得到的表格合并*/
+/*7. 将空表与上方得到的表格合并*/
 DATA EF_ALL ;
     MERGE GINMAP.EF_blank EF_basic EF_stat EF_date EF_seq ;
 	BY SUBJID;
@@ -530,8 +524,7 @@ DATA EF_ALL ;
 	  所以事实上实现的是一对一合并*/
 RUN;
 
-/*以下是调用宏%DelScreenFailure将EF_ALL里的screen failure的records删掉
-  生成数据集GINSDTM.EF。
+/*8. 以下是调用宏%DelScreenFailure将EF_ALL里的screen failure的records删掉生成数据集GINSDTM.EF。
   因为EF域主要为了功效分析，而screen failure的受试者基线数据不参与分析。*/
 %DelScreenFailure;
 
@@ -548,18 +541,18 @@ RUN;
  ***********************************************************/
 
 
-/*调用宏%getblank生成 空白数据集 GINMAP.DS_blank 。*/
+/*1. 调用宏%getblank生成 空白数据集 GINMAP.DS_blank 。*/
 OPTIONS MSTORED SASMSTORE=GINMacro ;
 %getblank(maptable=GINMAP.DS_map , dsout=GINMAP.DS_blank);
 
-/*此DATA步将原始数据集DS_raw的横向格式转变为纵向格式，返回DS_V数据集。*/
+/*2. 此DATA步将原始数据集DS_raw的横向格式转变为纵向格式，返回DS_V数据集。*/
 PROC TRANSPOSE data=GINRaw.DS_raw
 				 out=DS_V(drop=_label_ rename=(_name_=Disposition COL1=DSTERM));
 BY SUBJID;
 VAR INFORMED_CONSENT RANDOMIZED  VISIT_2 VISIT_3;
 RUN;
 
-/*此DATA步修改原始纵向数据集DS_V里的基本变量，返回DS_basic数据集。*/
+/*3. 此DATA步修改原始纵向数据集DS_V里的基本变量，返回DS_basic数据集。*/
 DATA DS_basic;
     SET DS_V ;
 	STUDYID = "1001";
@@ -575,7 +568,7 @@ PROC SORT data = DS_basic out = DS_basic NODUPKEY;
 RUN;
 
 
-/*下述DATA步用于修改DSTERM并创建DSDECOD，DSCAT,DSSCAT, EPOCH, DSSEQ变量*/
+/*4. 下述DATA步用于修改DSTERM并创建DSDECOD，DSCAT,DSSCAT, EPOCH, DSSEQ变量*/
 DATA DS_term ;
     SET DS_V;
 	/*所有受试者都做了知情同意*/
@@ -622,29 +615,21 @@ DATA DS_term ;
         END;
 RUN;
 
-/*调用此宏，返回得到的DS_term里，所有完成了screen epoch的受试者，
-  都被添加了一行record记录screen epoch完成了。*/
+/*5. 调用此宏，返回得到的DS_term里，所有完成了screen epoch的受试者，都被添加了一行record记录screen epoch完成了。*/
 %AddScreenDisposition;
 
-/*然后需要解决每个受试者的records的排序问题，通过DSSEQ。
-  每个受试者的records都已经通过赋值DSSEQ给出了序号。
-  但是，有一些问题。每个完成所有流程的受试者，其visit2和
-  visit3各有一条record，除Disposition变量不同外，其它内容
-  一样。而subject moved的受试者，不论其从visit2还是visit3
-  开始失访，其treatment epoch都是没有完成的，各有一条record。
-  而screen failure的受试者，其visit2和visit3虽然没有意义，
-  但目前仍各有一条record。*/
+/*6. 然后需要解决每个受试者的records的排序问题，通过DSSEQ。每个受试者的records都已经通过赋值DSSEQ给出了序号。
+  但是，有一些问题。每个完成所有流程的受试者，其visit2和visit3各有一条record，除Disposition变量不同外，其它内容
+  一样。而subject moved的受试者，不论其从visit2还是visit3开始失访，其treatment epoch都是没有完成的，各有一条record。
+  而screen failure的受试者，其visit2和visit3虽然没有意义，但目前仍各有一条record。*/
 
 	PROC SORT data=DS_term out=DS_term;
 	    BY SUBJID DSSEQ Disposition; 
 		/*Disopsition主要负责每个受试者vist2和visit3的排序*/
 	RUN;
 
-/*添加日期变量。
-  为什么要保留每个受试者的visit2和visit3两行？就是为了方便
-  添加日期变量。*/
-/*以下DATA步主要收集了每个受试者的disposition完成是在哪次
-  visit，用disposvisit表示。*/
+/*7. 添加日期变量。（为什么要保留每个受试者的visit2和visit3两行？就是为了方便添加日期变量）*/
+    /*以下DATA步主要收集了每个受试者的disposition完成是在哪次visit，用disposvisit表示。*/
 DATA DS_disposvisit(keep=SUBJID disposvisit);
     SET GINRaw.DS_raw;
 	IF INFORMED_CONSENT="INFORMED CONSENT OBTAINED" AND 
@@ -665,54 +650,51 @@ DATA DS_disposvisit(keep=SUBJID disposvisit);
 RUN;
 
 DATA DS_date;
-	    MERGE GINRaw.EF_raw(keep=SUBJID EFDAT_Base EFDAT_2W EFDAT_4W in=a)  
-              DS_term(in=b)
-              DS_disposvisit
-              GINSDTM.DM(keep=SUBJID RFSTDTC); 
-		BY SUBJID;
-		IF b;
-		/*此merge选择了EF原始数据，因为它记录的每个受试者的每次实际visit日期，
-		  这个时间是计算DS里日期需要的，因为DS里记录的也是实际日期。另外，
-		  EF原始数据正好是一个受试者一行，放在前边即为“一对多”。然后用
-		  IF b；选择DS里的受试者，因为现在制备的是DS数据集。另外，DS_disposvisit
-		  是为了分辨受试者treatment epoch的结束日期。DM是为了引入RFSTDTC*/
+    MERGE GINRaw.EF_raw(keep=SUBJID EFDAT_Base EFDAT_2W EFDAT_4W in=a)  
+          DS_term(in=b)
+          DS_disposvisit
+          GINSDTM.DM(keep=SUBJID RFSTDTC); 
+    BY SUBJID;
+    IF b;
+    /*此merge选择了EF原始数据，因为它记录的每个受试者的每次实际visit日期，这个时间是计算DS里日期需要的，
+      因为DS里记录的也是实际日期。另外，EF原始数据正好是一个受试者一行，放在前边即为“一对多”。然后用
+      IF b；选择DS里的受试者，因为现在制备的是DS数据集。另外，DS_disposvisit是为了分辨受试者treatment
+      epoch的结束日期。DM是为了引入RFSTDTC*/
         
-		/*添加时间变量*/
-		/*知情同意日期为visit1实际日期，即EFDAT_Base*/
-		IF DSTERM="INFORMED CONSENT OBTAINED" THEN DSSTDAT = EFDAT_Base;
-		/*随机化不论完成与否，日期都为visit1实际日期，即EFDAT_Base*/
-		IF DSTERM="RANDOMIZED" THEN DSSTDAT = EFDAT_Base;
-		/*screen epoch不论完成与否，结束日期都为visit1实际日期，即EFDAT_Base*/
-		IF EPOCH="SCREENING" AND DSCAT="DISPOSITION EVENT" THEN
-		DSSTDAT = EFDAT_Base;
-		/*visit2和visit3都是treatment epoch，而此epoch完成与否只需要一条
-		  record记录即可。可参考DS_disposvisit。在此两行里，disposvisit变量
-		  值只可能是V2或V3，若是V2，则代表treatment epoch结束日期应为visit2
-		  的实际日期。若为V3，则代表treatment epoch结束日期应为visit3
-		  的实际日期。*/
-		IF EPOCH="TREATMENT" AND disposvisit="V2" THEN DSSTDAT = EFDAT_2W;
-		ELSE IF EPOCH="TREATMENT" AND disposvisit="V3" THEN DSSTDAT = EFDAT_4W;
+    /*添加时间变量*/
+    /*知情同意日期为visit1实际日期，即EFDAT_Base*/
+    IF DSTERM="INFORMED CONSENT OBTAINED" THEN DSSTDAT = EFDAT_Base;
+    /*随机化不论完成与否，日期都为visit1实际日期，即EFDAT_Base*/
+    IF DSTERM="RANDOMIZED" THEN DSSTDAT = EFDAT_Base;
+    /*screen epoch不论完成与否，结束日期都为visit1实际日期，即EFDAT_Base*/
+    IF EPOCH="SCREENING" AND DSCAT="DISPOSITION EVENT" THEN
+    DSSTDAT = EFDAT_Base;
+    /*visit2和visit3都是treatment epoch，而此epoch完成与否只需要一条
+     record记录即可。可参考DS_disposvisit。在此两行里，disposvisit变量
+     值只可能是V2或V3，若是V2，则代表treatment epoch结束日期应为visit2
+     的实际日期。若为V3，则代表treatment epoch结束日期应为visit3的实际日期。*/
+    IF EPOCH="TREATMENT" AND disposvisit="V2" THEN DSSTDAT = EFDAT_2W;
+    ELSE IF EPOCH="TREATMENT" AND disposvisit="V3" THEN DSSTDAT = EFDAT_4W;
 
-		/*创建study day变量DSSTDY和ISO 8601变量DSSTDTC*/
-		DSSTDTC = put(input(DSSTDAT,yymmdd10.),e8601da10.);
+    /*创建study day变量DSSTDY和ISO 8601变量DSSTDTC*/
+    DSSTDTC = put(input(DSSTDAT,yymmdd10.),e8601da10.);
 
-		IF input(DSSTDAT,yymmdd10.)>= input(RFSTDTC,yymmdd10.) THEN 
-	    DSSTDY = input(DSSTDAT,yymmdd10.)- input(RFSTDTC,yymmdd10.)+1 ;
-	    ELSE DSSTDY = input(DSSTDAT,yymmdd10.)- input(RFSTDTC,yymmdd10.);
+    IF input(DSSTDAT,yymmdd10.)>= input(RFSTDTC,yymmdd10.) THEN 
+    DSSTDY = input(DSSTDAT,yymmdd10.)- input(RFSTDTC,yymmdd10.)+1 ;
+    ELSE DSSTDY = input(DSSTDAT,yymmdd10.)- input(RFSTDTC,yymmdd10.);
 
 RUN;
 
-	/*因为之前提到，指示每个受试者的treatment epoch完成与否的record只需要
-	  一条即可，但DS_term里有两条，但好在其它变量内容一样，所以删掉一条即可。
-	  此处删掉visit2对应的那条。另外，flag="Y"是对screen failure受试者
-	  的多余records的标记，也要删掉。*/
+/*8. 因为之前提到，指示每个受试者的treatment epoch完成与否的record只需要一条即可，但DS_term里有两条，
+     但好在其它变量内容一样，所以删掉一条即可。此处删掉visit2对应的那条。另外，flag="Y"是对screen failure
+     受试者的多余records的标记，也要删掉。*/
 DATA DS_date;
-	    SET DS_date;
-		IF Disposition="VISIT_2" OR flag="Y" THEN DELETE;
-		KEEP SUBJID DSTERM DSDECOD DSCAT DSSCAT EPOCH DSSEQ DSSTDTC DSSTDY;
+    SET DS_date;
+    IF Disposition="VISIT_2" OR flag="Y" THEN DELETE;
+    KEEP SUBJID DSTERM DSDECOD DSCAT DSSCAT EPOCH DSSEQ DSSTDTC DSSTDY;
 RUN;
 
-	/*最后，需要把之前的数据集（包括空表）merge起来，得到最终数据集*/
+/*9. 最后，需要把之前的数据集（包括空表）merge起来，得到最终数据集*/
 DATA GINSDTM.DS ;
     MERGE GINMAP.DS_blank DS_date(in=a) DS_basic  ;
 	BY SUBJID ;
@@ -893,31 +875,31 @@ OPTIONS MSTORED SASMSTORE=GINMACRO;
 	    SELECT DISTINCT SUBJID into:CSCRID separated by " "
 		FROM work.DS_term
 		WHERE Disposition="RANDOMIZED" AND DSTERM="RANDOMIZED"
-        ;
+                ;
 		/*此SELECT过程用于选出完成了screen epoch的所有受试者，将其SUBJID
 		  存储于CSCRID宏变量，之间由逗号隔开。*/
 		SELECT COUNT(DISTINCT SUBJID) into:CSCRID_count
 		FROM work.DS_term
 		WHERE Disposition="RANDOMIZED" AND DSTERM="RANDOMIZED"
-        ;
+                ;
 		/*此SELECT过程得到完成screen epoch的受试者数目，存于
 		  CSCRID_count宏变量*/
-	QUIT;
-	%PUT &CSCRID; /*从1号到30号都完成了screen epoch，只有31和32号因
-	                screen failure未进行randomization，从而位完成
-	                screen epoch。*/
-	%PUT &CSCRID_count; /*从1号到30号共30个*/
+    QUIT;
+    %PUT &CSCRID; /*从1号到30号都完成了screen epoch，只有31和32号因
+	            screen failure未进行randomization，从而位完成
+	            screen epoch。*/
+    %PUT &CSCRID_count; /*从1号到30号共30个*/
 
-	%DO i=1 %TO &CSCRID_count ;
+    %DO i=1 %TO &CSCRID_count ;
 	    %LET SID =%scan(&CSCRID,&i) ;
 		/*注意，这里有一个问题，如果宏变量CSCRID不是空格分隔而是逗号分隔，
 		  则直接这样调用会出现“宏函数 %SCAN 的参数过多”的ERROR提示，这是
 		  因为解析宏变量CSCRID后，程序将逗号理解为给%scan函数提供的参数的
 		  逗号，当然参数太多，此时可以使用%bquote函数。参：
 		  http://www.epiman.cn/thread-36646-1-1.html */
-		%PUT ****&SID**** ;
+	    %PUT ****&SID**** ;
 		/*下为为表DS_term里相应的受试者插入record*/
-		PROC SQL;
+	    PROC SQL;
 		    INSERT INTO DS_term 
 			SET SUBJID="&SID",
 			    DSTERM="COMPLETED",
@@ -927,8 +909,8 @@ OPTIONS MSTORED SASMSTORE=GINMACRO;
 				EPOCH="SCREENING",
 				DSSEQ=3;
 				
-		QUIT;	    
-	%END;
+            QUIT;	    
+    %END;
 
 %MEND AddScreenDisposition;
 
